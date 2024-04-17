@@ -6,7 +6,7 @@ import requests
 import yaml
 
 fileNamePath = os.path.split(os.path.realpath(__file__))[0]
-yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
+yamlPath = os.path.join(fileNamePath, 'config.yaml')
 cf = yaml.load(open(yamlPath, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
 
 # flagOptions > yaml
