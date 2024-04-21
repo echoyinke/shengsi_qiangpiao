@@ -19,6 +19,7 @@ account = {
 headers = {
     'Accept': 'application/json, text/plain, */*',
     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Content-Type': 'application/json;charset=UTF-8',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     'authentication': account['authentication'],
     'token': 'undefined'
@@ -33,7 +34,6 @@ def send_dingtalk(content):
         'Content-Type': 'application/json'
     }
     res = requests.request("POST", url, headers=headers, data=payload)
-    print(res)
 
 def token_check(token):
     url = "https://pc.ssky123.com/api/v2/user/tokenCheck"
@@ -70,32 +70,21 @@ def query_enq(startPortNo, endPortNo, start_date, token):
     return response
 
 
-def save_seats(sailDate, token):
+def save_seats(sail_date,line_no, token):
     import requests
     url = "https://pc.ssky123.com/api/v2/holding/save"
-    payload = {"accountTypeId": "0", "userId": "620595", "buyTicketType": 1, "contactNum": "17521080261",
-               "lineNum": 1775, "lineName": "南浦至嵊泗", "lineNo": 24031, "shipName": "舟桥6轮", "startPortNo": 46,
-               "startPortName": "上海(南浦)", "endPortNo": 17, "endPortName": "嵊泗(枸杞)", "sailDate": sailDate,
-               "sailTime": "09:40", "lineDirect": 1, "totalFee": 342, "totalPayFee": 342, "sx": 0,
-               "orderItemRequests": [
-                   {"passName": "孙桂芝", "credentialType": 1, "passId": 5077047, "seatClassName": "上舱",
-                    "seatClass": 31, "ticketFee": 114, "realFee": 114, "freeChildCount": 0, "passType": 1},
-                   {"passName": "尹珂", "credentialType": 1, "passId": 3593485, "seatClassName": "上舱",
-                    "seatClass": 31, "ticketFee": 114, "realFee": 114, "freeChildCount": 0, "passType": 1},
-                   {"passName": "刘妍", "credentialType": 1, "passId": 3593483, "seatClassName": "上舱",
-                    "seatClass": 31, "ticketFee": 114, "realFee": 114, "freeChildCount": 0, "passType": 1}],
-               "busStartTime": "07:30", "clxm": "客滚船", "clxh": 5, "hxlxh": 0, "hxlxm": "正常航班", "bus": 92,
-               "bus2": 0, "dwh": 23}
-
+    with open('./save_seats_payload_local.json', 'r') as file:
+        payload = json.load(file)  # 读取并解析JSON数据
+    payload['sailDate']=sail_date
+    payload['lineNo']=line_no
     headers['token'] = token
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
+    order_id = json.loads(response.text)['data']["orderId"]
+    return order_id
 
-    print(response.text)
-
-
-def res_seats(token):
+def res_seats(order_id, token):
     url = "https://pc.ssky123.com/api/v2/query/holding/res"
-    payload ={}
+    payload = {"orderId":order_id}
     headers['token'] = token
-    response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
+    response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
+    return response.text

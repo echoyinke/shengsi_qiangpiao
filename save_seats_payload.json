@@ -1,0 +1,63 @@
+{
+  "accountTypeId": "0",
+  "userId": "xxx",
+  "buyTicketType": 1,
+  "contactNum": "xxx",
+  "lineNum": 1775,
+  "lineName": "南浦至嵊泗",
+  "lineNo": "xxx",
+  "shipName": "舟桥6轮",
+  "startPortNo": 46,
+  "startPortName": "上海(南浦)",
+  "endPortNo": 17,
+  "endPortName": "嵊泗(枸杞)",
+  "sailDate": "xxx",
+  "sailTime": "09:40",
+  "lineDirect": 1,
+  "totalFee": 342,
+  "totalPayFee": 342,
+  "sx": 0,
+  "orderItemRequests": [
+    {
+      "passName": "xxx",
+      "credentialType": 1,
+      "passId": xxx,
+      "seatClassName": "上舱",
+      "seatClass": 31,
+      "ticketFee": 114,
+      "realFee": 114,
+      "freeChildCount": 0,
+      "passType": 1
+    },
+    {
+      "passName": "xxx",
+      "credentialType": 1,
+      "passId": xxx,
+      "seatClassName": "上舱",
+      "seatClass": 31,
+      "ticketFee": 114,
+      "realFee": 114,
+      "freeChildCount": 0,
+      "passType": 1
+    },
+    {
+      "passName": "xxx",
+      "credentialType": 1,
+      "passId": xxx,
+      "seatClassName": "上舱",
+      "seatClass": 31,
+      "ticketFee": 114,
+      "realFee": 114,
+      "freeChildCount": 0,
+      "passType": 1
+    }
+  ],
+  "busStartTime": "07:30",
+  "clxm": "客滚船",
+  "clxh": 5,
+  "hxlxh": 0,
+  "hxlxm": "正常航班",
+  "bus": 92,
+  "bus2": 0,
+  "dwh": 23
+}
