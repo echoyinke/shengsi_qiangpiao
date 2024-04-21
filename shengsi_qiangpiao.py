@@ -9,7 +9,7 @@ start_date="2024-04-25"
 
 token=get_token()
 
-res = query_enq(startPortNo,endPortNo, start_date , authentication=account['authentication'], token=token)
+res = query_enq(startPortNo,endPortNo, start_date , token=token)
 response=json.loads(res.text)
 if len(response['data']) > 0:
     info=response['data'][0]
