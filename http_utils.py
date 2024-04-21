@@ -6,20 +6,8 @@ import requests
 import yaml
 
 fileNamePath = os.path.split(os.path.realpath(__file__))[0]
-yamlPath = os.path.join(fileNamePath, 'config.yaml')
+yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
 cf = yaml.load(open(yamlPath, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
-
-# flagOptions > yaml
-parser = argparse.ArgumentParser(usage=" option can coverage .yaml ", description="")
-parser.add_argument("-f", "--from", default=cf['From'], help="出发站", dest="sfrom")
-parser.add_argument("-t", "--to", default=cf['To'], help="到达站", dest="to")
-parser.add_argument("-d", "--date", default=cf['Date'], help="订票日期", dest="date")
-parser.add_argument("-lbt", "--lbt", default=cf['Customization']['LatestBusTime'], help="最晚开车时间", dest="lbt")
-parser.add_argument("-lst", "--lst", default=cf['Customization']['LatestShipTime'], help="最晚开船时间", dest="lst")
-parser.add_argument("-mst", "--mst", default=cf['Customization']['MinShipTime'], help="最早开船时间", dest="mst")
-parser.add_argument("-line", "--line", default=cf['Customization']['LineNum'], help="指定航班", dest="line")
-parser.add_argument("-class", "--class", default=cf['Customization']['Class'], help="指定舱位", dest="className")
-args = parser.parse_args()
 
 account = {
     'phoneNum': cf['User']['mobile'],
@@ -30,7 +18,54 @@ account = {
 }
 
 
-def login4token():
+def send_dingtalk(content):
+    url = cf['dingtalk_url']
+    content = cf['dingtalk_keyword'] + content
+    payload = json.dumps({
+        "msgtype": "text",
+        "text": {
+            "content": content
+        }
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    res = requests.request("POST", url, headers=headers, data=payload)
+    print(res)
+
+
+def read_token_cache():
+    with open('./token_cache.txt', 'r') as file:
+        content = file.read()  # 读取整个文件内容
+    return content
+
+
+def write_token_cache(token):
+    with open('./token_cache.txt', 'w', encoding='UTF-8') as file:
+        file.write()  # 读取整个文件内容
+
+
+def token_check(token):
+    url = "https://pc.ssky123.com/api/v2/user/tokenCheck"
+    payload = {}
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'authentication': '1713686372620595',
+        'token': token
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    return "成功" in response.text
+
+
+def get_token():
+    token = read_token_cache()
+    token_ok = token_check(token)
+    if token_ok:
+        return token
     url = 'https://pc.ssky123.com/api/v2/user/passLogin?phoneNum=' + account['phoneNum'] + '&passwd=' + account[
         'passwd'] + '&deviceType=3'
 
@@ -40,10 +75,17 @@ def login4token():
         'token': 'undefined'
     }
     response = requests.request("POST", url, headers=headers)
-    return json.loads(response.text)['data']["token"]
+    token = json.loads(response.text)['data']["token"]
+    write_token_cache(token)
+    return token
 
 
-def query_enq(payload, authentication, token):
+def query_enq(startPortNo, endPortNo, start_date , authentication, token):
+    payload = {
+        "startPortNo": startPortNo,
+        "endPortNo": endPortNo,
+        "startDate": start_date,
+        "accountTypeId": "0"}
     url = "https://pc.ssky123.com/api/v2/line/ship/enq"
 
     headers = {
