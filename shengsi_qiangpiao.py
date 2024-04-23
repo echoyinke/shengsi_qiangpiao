@@ -16,10 +16,10 @@ sail_date="2024-04-28"
 
 
 # 等待放票
-# time_ahead = time_ahead_sale(sail_date)
-# if time_ahead > 0:
-#     logging.info(f"Tickets on {sail_date} is not on sale... wait {time_ahead}s")
-#     time.sleep(time_ahead)
+time_ahead = time_ahead_sale(sail_date)
+if time_ahead > 0:
+    logging.info(f"Tickets on {sail_date} is NOT ON SALE!!!... wait {time_ahead}s")
+    time.sleep(time_ahead)
 
 
 logging.info(f"Starting shengsi qiangpiao {startPortNo} 到 {endPortNo} on {sail_date} ...")
