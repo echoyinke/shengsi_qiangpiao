@@ -9,7 +9,7 @@ yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
 cf = yaml.load(open(yamlPath, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
 startPortNo=cf['PortNo']['nanpu']
 endPortNo=cf['PortNo']['gouqi']
-sail_date="2024-04-27"
+sail_date="2024-04-28"
 
 logging.info(f"Starting shengsi qiangpiao {startPortNo} 到 {endPortNo} on {sail_date} ...")
 
@@ -18,7 +18,7 @@ while True:
     token=get_token()
     res = query_enq(startPortNo,endPortNo, sail_date , token=token)
     response=json.loads(res.text)
-    if len(response['data']) > 0:
+    if response['data'] is not None and len(response['data']) > 0:
         info=response['data'][0]
         available_seat_info=""
         seatClasses = info['seatClasses']
