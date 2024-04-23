@@ -2,4 +2,4 @@
 __pycache__/
  config_local.yaml
  save_seats_payload_local.json
- token_cache.txt
+token_cache.txt
