@@ -1,3 +1,5 @@
- .idea/
- __pycache__/
+.idea/
+__pycache__/
  config_local.yaml
+ save_seats_payload_local.json
+ token_cache.txt

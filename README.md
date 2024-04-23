@@ -6,5 +6,7 @@
 * 下单
 
 # Setup
+* install requirements.txt
+* rename config.yaml/save_seats_payload.yaml to config_local.yaml/save_seats_payload_local.yaml
 
 

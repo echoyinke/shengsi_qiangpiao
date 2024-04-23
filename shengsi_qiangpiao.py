@@ -1,17 +1,20 @@
 from http_utils import *
 import logging
+import time
 logging.basicConfig(level=logging.INFO)
+
 
 fileNamePath = os.path.split(os.path.realpath(__file__))[0]
 yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
 cf = yaml.load(open(yamlPath, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
 startPortNo=cf['PortNo']['nanpu']
 endPortNo=cf['PortNo']['gouqi']
-sail_date="2024-04-25"
+sail_date="2024-04-27"
 
 logging.info(f"Starting shengsi qiangpiao {startPortNo} 到 {endPortNo} on {sail_date} ...")
 
 while True:
+    time.sleep(1)
     token=get_token()
     res = query_enq(startPortNo,endPortNo, sail_date , token=token)
     response=json.loads(res.text)

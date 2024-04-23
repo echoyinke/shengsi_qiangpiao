@@ -54,7 +54,7 @@ def get_token():
     response = requests.request("POST", url, headers=headers)
     token = json.loads(response.text)['data']["token"]
     with open('./token_cache.txt', 'w', encoding='UTF-8') as file:
-        file.write()
+        file.write(token)
     return token
 
 
@@ -73,8 +73,8 @@ def query_enq(startPortNo, endPortNo, start_date, token):
 def save_seats(sail_date,line_no, token):
     import requests
     url = "https://pc.ssky123.com/api/v2/holding/save"
-    with open('./save_seats_payload_local.json', 'r') as file:
-        payload = json.load(file)  # 读取并解析JSON数据
+    with open('./save_seats_payload_local.json', 'r', encoding='utf-8') as file:
+        payload = json.load(file)
     payload['sailDate']=sail_date
     payload['lineNo']=line_no
     headers['token'] = token
