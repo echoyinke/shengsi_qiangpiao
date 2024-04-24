@@ -1,9 +1,14 @@
 import argparse
 import json
 import os
+import logging
+import time
 
 import requests
 import yaml
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 fileNamePath = os.path.split(os.path.realpath(__file__))[0]
 yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
@@ -79,7 +84,12 @@ def save_seats(sail_date,line_no, token):
     payload['lineNo']=line_no
     headers['token'] = token
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-    order_id = json.loads(response.text)['data']["orderId"]
+    try:
+        order_id = json.loads(response.text)['data']["orderId"]
+    except Exception as e:
+        logging.info(f"Encounter ex:{e}, response text is: {response.text}")
+        time.sleep(1)
+        return None
     return order_id
 
 def res_seats(order_id, token):
