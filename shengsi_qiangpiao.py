@@ -9,7 +9,7 @@ yamlPath = os.path.join(fileNamePath, 'config_local.yaml')
 cf = yaml.load(open(yamlPath, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
 startPortNo=cf['PortNo']['nanpu']
 endPortNo=cf['PortNo']['gouqi']
-sail_date="2024-04-28"
+sail_date="2024-05-01"
 
 
 logging.info(f"Starting shengsi qiangpiao script{startPortNo} 到 {endPortNo} on {sail_date} ...")

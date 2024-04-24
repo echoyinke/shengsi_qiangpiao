@@ -49,7 +49,7 @@ def token_check(token):
 
 
 def get_token():
-    with open('./token_cache.txt', 'r') as file:
+    with open("D:/PyProj/shengsi_qiangpiao/token_cache.txt", 'r') as file:
         token = file.read()
     token_ok = token_check(token)
     if token_ok:
@@ -58,7 +58,7 @@ def get_token():
         'passwd'] + '&deviceType=3'
     response = requests.request("POST", url, headers=headers)
     token = json.loads(response.text)['data']["token"]
-    with open('./token_cache.txt', 'w', encoding='UTF-8') as file:
+    with open("D:/PyProj/shengsi_qiangpiao/token_cache.txt", 'w', encoding='UTF-8') as file:
         file.write(token)
     return token
 
