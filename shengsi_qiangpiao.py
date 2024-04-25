@@ -37,6 +37,7 @@ def pick_sail(sails):
 while True:
     need_wait_time = get_next_check_time()
     if True or need_wait_time == 0:
+        time.sleep(1)
         n+=1
         logging.info(f"Trying qiangpiao {n} times ...")
         token=get_token()
@@ -45,7 +46,6 @@ while True:
         # failed fast
         if response['data'] is None:
             logging.info(f"Response data is None/Empty , {res.text}\n")
-            time.sleep(1)
             continue
         # core logic
         sails=response['data']
