@@ -9,5 +9,7 @@ User:
 PortNo:
   nanpu: 1046
   gouqi: 1017
+  shenjiawan: 1028
+
 dingtalk_url: 'https://oapi.dingtalk.com/robot/send?access_token=xxxxxx"'
 dingtalk_keyword: "xxxx"
